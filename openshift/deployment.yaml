@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  name: zookeeper
+  name: zookeeper-headless
   labels:
     service: zookeeper
     app: zookeeper
@@ -13,11 +13,24 @@ spec:
       port: 2888
     - name: leader-election
       port: 3888
-    - name: client
-      port: 2181
   clusterIP: None
   selector:
     app: zookeeper
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  labels:
+    service: zookeeper
+    app: zookeeper
+spec:
+  ports:
+    - name: client
+      port: 2181
+  selector:
+    app: zookeeper
+  type: ClusterIP
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
