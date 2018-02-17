@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: zookeeper
+  labels:
+    service: zookeeper
+    app: zookeeper
+spec:
+  ports:
+    - name: peer
+      port: 2888
+    - name: leader-election
+      port: 3888
+    - name: client
+      port: 2181
+  clusterIP: None
+  selector:
+    app: zookeeper
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  serviceName: "zookeeper"
+  podManagementPolicy: Parallel
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+      annotations:
+    spec:
+      containers:
+      - name: zookeeper
+        image: dstritzke/zookeeper:3.5
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: peer
+        - containerPort: 3888
+          name: leader-election
+      terminationGracePeriodSeconds: 10
