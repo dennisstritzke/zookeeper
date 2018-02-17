@@ -1,36 +1,28 @@
-# Zookeeper Cluster on OpenShift using StatefulSet
+# Zookeeper Ensemble on OpenShift using StatefulSet
+> ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed
+> synchronization, and providing group services. All of these kinds of services are used in some form or another by
+> distributed applications. Each time they are implemented there is a lot of work that goes into fixing the bugs and
+> race conditions that are inevitable. Because of the difficulty of implementing these kinds of services, applications
+> initially usually skimp on them ,which make them brittle in the presence of change and difficult to manage. Even when
+> done correctly, different implementations of these services lead to management complexity when the applications are
+> deployed.
 
-## Monitor
-### Server Status
-```
-wget -qO- localhost:8080/commands/stats
-{
-  "version" : "3.5.3-beta-8ce24f9e675cbefffb8f21a47e06b42864475a60, built on 04/03/2017 16:19 GMT",
-  "read_only" : false,
-  "server_stats" : {
-    "packets_sent" : 0,
-    "packets_received" : 0,
-    "max_latency" : 0,
-    "min_latency" : 0,
-    "outstanding_requests" : 0,
-    "avg_latency" : 0,
-    "server_state" : "follower",
-    "data_dir_size" : 699,
-    "log_dir_size" : 699,
-    "last_processed_zxid" : 0,
-    "provider_null" : false,
-    "num_alive_client_connections" : 0
-  },
-  "node_count" : 5,
-  "connections" : [ ],
-  "command" : "stats",
-  "error" : null
-}
-```
+Taken from the [Apache Zookeeper Project Page](http://zookeeper.apache.org). This project contains an OpenShift ready
+deployment of Zookeeper.  
 
-### Monitoring
-```
-wget -qO- localhost:8080/commands/monitor
+## Considerations
+### Static Ensemble
+The deployed ensemble consists out of three Zookeeper instances, which is statically defined. Using this deployment you
+are able to specify a different number of instances, but a redeployment is required. A dynamic ensemble scaling isn't
+supported as it is an alpha feature and Zookeeper doesn't recommend dynamic ensemble changes for production.
+
+## Data and Data Log directory
+TODO
+
+## Monitoring
+Configure your monitoring system to scrape all Zookeeper instances with an HTTP GET to
+`http://<instance>:8080/commands/monitor`. The endpoint will return monitoring data in a Prometheus compatible format.
+```json
 {
   "version" : "3.5.3-beta-8ce24f9e675cbefffb8f21a47e06b42864475a60, built on 04/03/2017 16:19 GMT",
   "avg_latency" : 0,
@@ -50,3 +42,4 @@ wget -qO- localhost:8080/commands/monitor
   "command" : "monitor",
   "error" : null
 }
+```

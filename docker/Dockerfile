@@ -3,7 +3,8 @@ FROM openjdk:8-jre-alpine
 # Install required packages
 RUN apk add --no-cache \
     bash \
-    su-exec
+    su-exec \
+    jq
 
 ENV ZOO_USER=zookeeper \
     ZOO_CONF_DIR=/conf \
@@ -58,7 +59,7 @@ ENV PATH=$PATH:/$DISTRO_NAME/bin \
 COPY zoo.cfg /conf/zoo.cfg
 
 COPY docker-entrypoint.sh /
-COPY docker-entrypoint.sh /
+COPY zkOk.sh /
 RUN chmod 750 /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["zkServer.sh", "start-foreground"]

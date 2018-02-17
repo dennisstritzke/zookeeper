@@ -26,8 +26,10 @@ metadata:
     app: zookeeper
 spec:
   ports:
-    - name: client
-      port: 2181
+  - name: client
+    port: 2181
+  - name: commands
+    port: 8080
   selector:
     app: zookeeper
   type: ClusterIP
@@ -57,9 +59,19 @@ spec:
           name: peer
         - containerPort: 3888
           name: leader-election
+        - containerPort: 8080
+          name: commands
         volumeMounts:
         - name: data
           mountPath: /data
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+            - "/zkOk.sh"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
       terminationGracePeriodSeconds: 10
   volumeClaimTemplates:
   - metadata:
