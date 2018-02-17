@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  name: zookeeper-headless
+  name: zookeeper
   labels:
     service: zookeeper
     app: zookeeper
@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: zookeeper
+  name: zookeeper-client
   labels:
     service: zookeeper
     app: zookeeper
@@ -57,4 +57,16 @@ spec:
           name: peer
         - containerPort: 3888
           name: leader-election
+        volumeMounts:
+        - name: data
+          mountPath: /data
       terminationGracePeriodSeconds: 10
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
