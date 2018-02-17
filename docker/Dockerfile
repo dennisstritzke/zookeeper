@@ -57,7 +57,8 @@ ENV PATH=$PATH:/$DISTRO_NAME/bin \
 
 COPY zoo.cfg /conf/zoo.cfg
 
-COPY ../docker-entrypoint.sh /
+COPY docker-entrypoint.sh /
+COPY docker-entrypoint.sh /
 RUN chmod 750 /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["zkServer.sh", "start-foreground"]

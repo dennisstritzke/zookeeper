@@ -74,11 +74,6 @@ fi
 MEMBERS=${T_MEMBERS#\,}
 echo "Zookeeper MEMBERS:" ${MEMBERS}
 
-# Initialize, start zookeeper, add members as participant through zkCli, stop. 
-# Finally start-foreground to keep container running.
 zkServer-initialize.sh --force --myid=${T_ID}
-zkServer.sh start-foreground /conf/zoo.cfg
-zkCli.sh reconfig -members ${MEMBERS} quit
-zkServer.sh stop
 
 exec "$@"
