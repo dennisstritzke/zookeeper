@@ -28,8 +28,6 @@ spec:
   ports:
   - name: client
     port: 2181
-  - name: commands
-    port: 8080
   selector:
     app: zookeeper
   type: ClusterIP
@@ -50,7 +48,7 @@ spec:
     spec:
       containers:
       - name: zookeeper
-        image: dstritzke/zookeeper:3.5
+        image: dstritzke/zookeeper:3.4.10
         imagePullPolicy: Always
         ports:
         - containerPort: 2181
@@ -59,8 +57,6 @@ spec:
           name: peer
         - containerPort: 3888
           name: leader-election
-        - containerPort: 8080
-          name: commands
         volumeMounts:
         - name: data
           mountPath: /data
