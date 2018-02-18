@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ZK_COMMAND_PORT=${ZK_COMMAND_PORT:-8080}
-OK=$(wget -qO- http://localhost:${ZK_COMMAND_PORT}/commands/ruok | jq '.error')
-if [ "$OK" == "null" ]; then
+ZK_CLIENT_PORT=${ZK_CLIENT_PORT:-2181}
+OK=$(echo "ruok" | nc localhost ${ZK_CLIENT_PORT})
+if [ "$OK" == "imok" ]; then
 	exit 0
 else
 	exit 1

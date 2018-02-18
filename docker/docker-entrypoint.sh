@@ -55,17 +55,15 @@ echo "Zookeeper PEERS:" ${PEERS[@]}
 
 # No DNS PEERS, setup a default localhost else build PEERS config.
 if [ ${#PEERS[@]} -eq 0 ]; then
-  echo "server.0=localhost:2888:3888:participant;2181" >> /conf/zoo.cfg.dynamic
+  echo "server.0=localhost:2888:3888:participant;2181" >> /conf/zoo.cfg
   T_MEMBERS="server.0=localhost:2888:3888:participant;2181"
 else
-  echo "\n\nBefore for loop\n\n"
   for PEER in "${PEERS[@]}"
   do
-    echo "\n\nPeer: $PEER\n\n"
     P_HOSTNAME=$( echo ${PEER} | cut -d "." -f1 )
     P_ID=$( echo ${P_HOSTNAME} | cut -d "-" -f2 | cut -d "-" -f1 )
-    P_MEMBER="server.${P_ID}=${PEER}:2888:3888:participant;2181"
-    echo ${P_MEMBER} >> /conf/zoo.cfg.dynamic
+    P_MEMBER="server.${P_ID}=${PEER}:2888:3888"
+    echo ${P_MEMBER} >> /conf/zoo.cfg
     T_MEMBERS=${T_MEMBERS},${P_MEMBER}
   done
 fi
@@ -74,6 +72,6 @@ fi
 MEMBERS=${T_MEMBERS#\,}
 echo "Zookeeper MEMBERS:" ${MEMBERS}
 
-zkServer-initialize.sh --force --myid=${T_ID}
+echo "${T_ID}" > /data/myid
 
 exec "$@"
