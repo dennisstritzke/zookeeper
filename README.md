@@ -17,7 +17,9 @@ are able to specify a different number of instances, but a redeployment is requi
 supported as it is an alpha feature and Zookeeper doesn't recommend dynamic ensemble changes for production.
 
 ## Data and Data Log directory
-TODO
+This deployment uses two PVCs for the data and data log directory, which will most likely be on the same storage device.
+Zookeeper recommends putting these directories on different storage devices for best performance. If you are running a
+read / write intensive Zookeeper workload execute load tests before using this deployment.
 
 ## Monitoring
 Configure your monitoring system to scrape all Zookeeper instances with an HTTP GET to

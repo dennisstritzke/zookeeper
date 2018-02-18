@@ -64,6 +64,8 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
+        - name: datalog
+          mountPath: /datalog
         readinessProbe:
           exec:
             command:
@@ -76,6 +78,14 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  - metadata:
+      name: datalog
     spec:
       accessModes:
       - ReadWriteOnce
