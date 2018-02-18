@@ -10,6 +10,20 @@
 Taken from the [Apache Zookeeper Project Page](http://zookeeper.apache.org). This project contains an OpenShift ready
 deployment of Zookeeper.  
 
+## Getting Started
+Instantiating the Zookeeper Ensemble.
+```
+oc new-project zookeeper
+oc create -f openshift/deployment.yaml
+```
+
+Clients are able to use Zookeeper through the `zookeeper-client` service. Test your ensemble with the following
+commands.
+```
+oc rsh zookeeper-0 zkCli.sh create /foo 42
+oc rsh zookeeper-2 zkCli.sh get /foo
+```
+
 ## Considerations
 ### Static Ensemble
 The deployed ensemble consists out of three Zookeeper instances, which is statically defined. Using this deployment you
