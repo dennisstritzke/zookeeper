@@ -36,26 +36,22 @@ Zookeeper recommends putting these directories on different storage devices for 
 read / write intensive Zookeeper workload execute load tests before using this deployment.
 
 ## Monitoring
-Configure your monitoring system to scrape all Zookeeper instances with an HTTP GET to
-`http://<instance>:8080/commands/monitor`. The endpoint will return monitoring data in a Prometheus compatible format.
+Monitoring data can be obtained by sending `mntr` as the content of a TCP connection to the Zookeeper instance. THe data
+returned is Prometheus compatible. You can use `echo "mntr" | nc zookper-1.zookeeper 2181` to obtain the data. 
 ```json
-{
-  "version" : "3.5.3-beta-8ce24f9e675cbefffb8f21a47e06b42864475a60, built on 04/03/2017 16:19 GMT",
-  "avg_latency" : 0,
-  "max_latency" : 0,
-  "min_latency" : 0,
-  "packets_received" : 0,
-  "packets_sent" : 0,
-  "num_alive_connections" : 0,
-  "outstanding_requests" : 0,
-  "server_state" : "follower",
-  "znode_count" : 5,
-  "watch_count" : 0,
-  "ephemerals_count" : 0,
-  "approximate_data_size" : 325,
-  "open_file_descriptor_count" : 46,
-  "max_file_descriptor_count" : 1048576,
-  "command" : "monitor",
-  "error" : null
-}
+zk_version	3.4.11-37e277162d567b55a07d1755f0b31c32e93c01a0, built on 11/01/2017 18:06 GMT
+zk_avg_latency	0
+zk_max_latency	0
+zk_min_latency	0
+zk_packets_received	31
+zk_packets_sent	30
+zk_num_alive_connections	1
+zk_outstanding_requests	0
+zk_server_state	follower
+zk_znode_count	8
+zk_watch_count	0
+zk_ephemerals_count	0
+zk_approximate_data_size	338
+zk_open_file_descriptor_count	29
+zk_max_file_descriptor_count	1048576
 ```
